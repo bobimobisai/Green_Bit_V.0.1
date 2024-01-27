@@ -25,3 +25,15 @@ def buy():
     )
     buy.adjust(1)
     return buy.as_markup()
+
+
+def menu():
+    menu = InlineKeyboardBuilder()
+    menu.add(
+        types.InlineKeyboardButton(text="📊Курс валют", callback_data="trade")
+    )
+    menu.add(
+        types.InlineKeyboardButton(text="⬅️Назад", callback_data="back")
+    )
+    menu.adjust(4)
+    return menu.as_markup()
