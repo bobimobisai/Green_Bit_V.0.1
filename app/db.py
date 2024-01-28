@@ -1,32 +1,88 @@
-import psycopg
 from config import db_user, db_pass
-
-# db config
-
-db_name = "postgres"
-username = db_user
-password = db_pass
-host = "127.0.0.1"
-port = 5432
+from psycopg_pool import AsyncConnectionPool
+import asyncio
 
 
-# sample requests
-create_table = """
-            CREATE TABLE test (
-                id serial PRIMARY KEY,
-                num INT,
-                data VARCHAR)
-            """
-enter_data = "INSERT INTO test (num, data) VALUES (%s, %s)"
+db_conf = f"dbname=postgres user={db_user} password={db_pass} host=127.0.0.1 port=5432"
 
-get_data = "SELECT * FROM test"
+pool = AsyncConnectionPool(conninfo=db_conf, open=False)
 
-# db conection
 
-with psycopg.connect(
-    dbname=db_name, user=username, password=password, port=port, host=host
-) as conn:
-    with conn.cursor() as cur:
-        cur.execute(get_data)
-        res = cur.fetchone()
-        print(res)
+async def open_pool():
+    await pool.open()
+    await pool.wait()
+    print("Connection Pool Opened")
+
+
+async def select_fetchall(query, args):
+    async with pool.connection() as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute(query, args)
+            results = await cursor.fetchall()
+            return results
+
+
+async def write(query, args):
+    async with pool.connection() as conn:
+        async with conn.cursor() as cursor:
+            await cursor.execute(query, args)
+            if "RETURNING" in query:
+                results = await cursor.fetchone()
+                return results
+            else:
+                await conn.commit()
+                return
+
+
+# CRUD
+
+
+async def create_data(data):
+    try:
+        query_1 = """
+        INSERT INTO "user" (user_id)
+        VALUES (%s);
+        """
+        result = await write(query=query_1, args=data)
+        return result
+    except Exception as e:
+        print(f"Error in create function: {e}")
+        return {"ERROR": e}
+
+
+async def read_data(args):
+    try:
+        query_1 = """
+        SELECT * FROM "user" WHERE user_id = %s;
+        """
+        result = await select_fetchall(query=query_1, args=args)
+        return result
+    except Exception as e:
+        print(f"Error in create function: {e}")
+        return {"ERROR": e}
+
+
+async def update_data(data, args, column):
+    try:
+        query_1 = f"""
+        UPDATE "user"
+        SET {column} = {data}
+        WHERE user_id = %s
+        """
+        result = await write(query=query_1, args=args)
+        return result
+    except Exception as e:
+        print(f"Error in create function: {e}")
+        return {"ERROR": e}
+
+
+async def delete_data(args):
+    try:
+        query_1 = """
+        DELETE FROM "user"
+        WHERE user_id = %s
+        """
+        await write(query=query_1, args=args)
+    except Exception as e:
+        print(f"Error in delete_user function: {e}")
+        return {"ERROR": e}
