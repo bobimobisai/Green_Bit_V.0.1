@@ -2,8 +2,6 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 
-from aiogram.types import Message
-from aiogram.filters.command import Command
 from config import token
 from db import open_pool
 
@@ -20,7 +18,7 @@ async def main():
         dp = Dispatcher()
         dp.include_router(basic.router)
         await bot.delete_webhook(drop_pending_updates=True)
-        await dp.start_polling(bot)
+        await dp.start_polling(bot, polling_timeout=11)
     except Exception as e:
         print(e)
 

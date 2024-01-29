@@ -1,6 +1,5 @@
 from config import db_user, db_pass
 from psycopg_pool import AsyncConnectionPool
-import asyncio
 
 
 db_conf = f"dbname=postgres user={db_user} password={db_pass} host=127.0.0.1 port=5432"
