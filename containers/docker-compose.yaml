@@ -1,0 +1,11 @@
+version: "3.5"
+
+services:
+  db_auth: 
+    container_name: db_auth_tg_bot
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=green17bot
+      - POSTGRES_USER=admin
+    image: postgres:15.5-alpine3.18
