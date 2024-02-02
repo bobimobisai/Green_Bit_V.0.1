@@ -2,6 +2,7 @@ from aiogram import types
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import BotCommand
 
+
 class Menu:
     def __init__(self, lang, size):
         self.lang = lang
@@ -93,6 +94,17 @@ class Settigs(Menu):
         self.get_size()
 
 
+# еще не добавил :(
+class SettigsRu(Menu):
+    def __init__(self, size):
+        super().__init__(land="ru_set", size=size)
+        self.add_button(text="Подписаться", callback_data="Подписались!")
+        self.add_button(text="Сменить язык", callback_data="s_w_db")
+        self.add_button(text="Удалить аккаунт...", callback_data="del")
+        self.add_button(text="Про версия", callback_data="pro")
+        self.get_size()
+
+
 def language(lang: str, size: int):
     if lang == "en":
         menu_instance = Language(size=size)
@@ -106,16 +118,12 @@ def language(lang: str, size: int):
 def menu(lang: str = "en_user_new", size: int = 2):
     if lang == "en_user_new":
         menu_instance = EnglishUserNewMenu(size=size)
-
     elif lang == "ru_user_new":
         menu_instance = RussianUserNewMenu(size=size)
-
     elif lang == "en_user_auth":
         menu_instance = EnglishUserAuthMenu(size=size)
-
     elif lang == "ru_user_auth":
         menu_instance = RussianUserAuthMenu(size=size)
-
     return menu_instance.as_markup()
 
 

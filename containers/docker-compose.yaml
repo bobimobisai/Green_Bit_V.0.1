@@ -9,3 +9,5 @@ services:
       - POSTGRES_PASSWORD=green17bot
       - POSTGRES_USER=admin
     image: postgres:15.5-alpine3.18
+    volumes:
+      - C:/Users/Bob/VS Project/GreenBit_v.0.2/Data Base/dump.sql:/docker-entrypoint-initdb.d/dump.sql

@@ -2,7 +2,7 @@ from config import db_user, db_pass
 from psycopg_pool import AsyncConnectionPool
 from psycopg_pool import errors
 
-db_conf = f"dbname=postgres user={db_user} password={db_pass} host=127.0.0.1 port=5432"
+db_conf = f"dbname=admin user={db_user} password={db_pass} host=127.0.0.1 port=5432"
 
 pool = AsyncConnectionPool(conninfo=db_conf, open=False)
 

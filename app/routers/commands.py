@@ -61,7 +61,7 @@ async def command_menu(message: Message, state: FSMContext):
                 caption=text_en_st,
                 reply_markup=menu(lang="en_user_new", size=2),
             )
-        elif user_language == "ru":
+        else:
             await message.answer_photo(
                 photo=start_photo,
                 caption=text_ru_st,

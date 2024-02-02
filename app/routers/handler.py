@@ -140,8 +140,8 @@ async def menu_new_s_w_db(callback: types.CallbackQuery, state: FSMContext):
 # регистрация в БД и FSM
 @router.callback_query(F.data == "join")
 async def join_new_user(callback: types.CallbackQuery, state: FSMContext):
-    text_en = "Now you are with us💚! Check out the functionality by going to the Menu! -> /menu"
-    text_ru = "Теперь вы с нами💚! Оцените функционал перейдя в Меню! -> /menu"
+    text_en = "Now you are with us💚! Check out the functionality by going to the Menu! ->\n/menu"
+    text_ru = "Теперь вы с нами💚! Оцените функционал перейдя в Меню! ->\n/menu"
 
     user_data = await state.get_data()
     user_language = user_data.get("user_language")
